@@ -1,24 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
+  name: nginx-deployment
+  namespace: argocd
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      run: nginx
+      app: nginx
   template:
     metadata:
       labels:
-        run: nginx
+        app: nginx
     spec:
-        containers:
+      containers:
       - name: nginx
-        image: nginx
-        command:
-        - /bin/sh
-        - -c
-        - echo 'Hello 1st version' > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'
+        image: nginx:latest
         ports:
         - containerPort: 80
-        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
+

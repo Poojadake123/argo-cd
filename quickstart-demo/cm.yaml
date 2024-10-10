@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: argocd
+data:
+  nginx.conf: |
+    events { }
+    http {
+        server {
+            listen 80;
+            location / {
+                return 200 'Hello, Nginx is running!';
+                add_header Content-Type text/plain;
+            }
+        }
+    }
+
