@@ -15,7 +15,11 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:latest
+        image: nginx
+        command:
+        - /bin/sh
+        - -c
+        - echo 'Hello 1st version' > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'
         ports:
         - containerPort: 80
         volumeMounts:
@@ -26,4 +30,3 @@ spec:
       - name: nginx-config-volume
         configMap:
           name: nginx-config
-
